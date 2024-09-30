@@ -30,3 +30,21 @@ def list_tasks(cluster_name=None, service_name=None, status=None):
         table.add_row([task_id, service, task_status, running_count, launch_type, age])
 
     print(table)
+# ecs_tasks.py
+
+def stop_task(cluster_name, task_id):
+    ecs_client = boto3.client('ecs')
+    response = ecs_client.stop_task(
+        cluster=cluster_name,
+        task=task_id
+    )
+    print(f"Task {task_id} stopped successfully.")
+
+def run_task(cluster_name, task_definition):
+    ecs_client = boto3.client('ecs')
+    response = ecs_client.run_task(
+        cluster=cluster_name,
+        taskDefinition=task_definition
+    )
+    print(f"Task {response['tasks'][0]['taskArn']} started successfully.")
+
