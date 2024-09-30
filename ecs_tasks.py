@@ -48,3 +48,15 @@ def run_task(cluster_name, task_definition):
     )
     print(f"Task {response['tasks'][0]['taskArn']} started successfully.")
 
+# ecs_tasks.py (for task migration)
+
+def migrate_task(from_cluster, to_cluster, task_definition):
+    ecs_client = boto3.client('ecs')
+    
+    response = ecs_client.run_task(
+        cluster=to_cluster,
+        taskDefinition=task_definition
+    )
+    new_task_id = response['tasks'][0]['taskArn'].split('/')[-1]
+    
+    print(f"Task migrated to {to_cluster}. New task ID: {new_task_id}")
